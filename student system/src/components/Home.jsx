@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, getDocs, addDoc, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
 import Student from './Student';
@@ -10,8 +10,8 @@ const Home = () => {
     lastname: '',
     grade: ''
   });
-
   const [studentList, setStudentList] = useState([]);
+  const [editToggle, setEditToggle] = useState(false);
 
   const getStudents = async () => {
     const querySnapshot = await getDocs(collection(db, "students"));
@@ -45,10 +45,39 @@ const Home = () => {
     }
   };
   
-  const deleteStudent = (id) => {
-    deleteDoc(doc(db, "students", id));
+  const deleteStudent = ( id ) => {
+    deleteDoc(doc(db, 'students', id));
     getStudents();
   };
+
+  const updateStudent = (id, firstname, lastname, grade) => {
+    setEditToggle(true);
+
+    setStudent({
+      id,
+      firstname,
+      lastname,
+      grade
+    });
+  };
+
+  const handleUpdate = () => {
+    const studentRef = doc(db, "students", student.id);
+
+    updateDoc(studentRef, {
+      firstname: student.firstname,
+      lastname: student.lastname,
+      grade: student.grade
+    });
+    getStudents();
+    setEditToggle(true);
+  
+    setStudent({
+      firstname: '',
+      lastname: '',
+      grade: ''
+    });
+  }
 
   return (
     <section className='p-5'>
@@ -101,8 +130,13 @@ const Home = () => {
           </div>
 
           <div className='col-md-2'>
-            <button onClick={addStudent} className='btn btn-dark mt-3'>Add +</button>
+            {
+              editToggle 
+                ? <button onClick={handleUpdate} className='btn btn-success mt-3'>Update</button>
+                : <button onClick={addStudent} className='btn btn-dark mt-3'>Add +</button>
+            }
           </div>
+
           <div className='alert alert-light mt-3'>
             <h3 className='fw-bold'>
               {student.firstname} {student.lastname} <span className='badge bg-dark'>{student.grade}</span>
@@ -121,6 +155,7 @@ const Home = () => {
             grade={studentRecord.grade} 
             id={studentRecord.id}
             deleteStudent={deleteStudent}
+            updateStudent={updateStudent}
           />
         ))
       }
