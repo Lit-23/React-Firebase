@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+import { collection, getDocs, addDoc, onSnapshot } from "firebase/firestore";
+import { db } from "./firebaseConfig";
+
 import Student from './Student'
 
 const Home = () => {
@@ -8,33 +11,38 @@ const Home = () => {
     grade: ''
   });
 
-  const [studentList, setStudenList] = useState([]);
+  const [studentList, setStudentList] = useState([]);
+
+  const getStudents = async () => {
+    const querySnapshot = await getDocs(collection(db, "students"));
+    const students = querySnapshot.docs.map((doc) => (
+      {...doc.data()}
+    ));
+    setStudentList(students);
+    console.log(students)
+  }
 
   useEffect(() => {
-    const savedStudentList = JSON.parse(localStorage.getItem('studentList'));
-
-    if(savedStudentList){
-      setStudenList(savedStudentList);
-    }
+    getStudents()
   }, [])
 
   const addStudent = () => {
     if( student.firstname === '' || student.lastname === '' || student.grade === '' ) {
       alert('Missing field');
     } else{
-      setStudenList(
+      setStudentList(
         studentList => [
           ...studentList, student
         ]
       );
+
+      addDoc(collection(db, 'students'), student);
   
       setStudent({
         firstname: '',
         lastname: '',
         grade: ''
       });
-      
-      localStorage.setItem('studentList', JSON.stringify(studentList));
     }
   }
 
