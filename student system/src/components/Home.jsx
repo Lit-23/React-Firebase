@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { collection, getDocs, addDoc, onSnapshot } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
-import Student from './Student'
+import Student from './Student';
 
 const Home = () => {
   const [student, setStudent] = useState({
@@ -19,12 +19,11 @@ const Home = () => {
       {...doc.data()}
     ));
     setStudentList(students);
-    console.log(students)
-  }
+  };
 
   useEffect(() => {
     getStudents()
-  }, [])
+  }, []);
 
   const addStudent = () => {
     if( student.firstname === '' || student.lastname === '' || student.grade === '' ) {
@@ -44,7 +43,7 @@ const Home = () => {
         grade: ''
       });
     }
-  }
+  };
 
   return (
     <section className='p-5'>

@@ -3,13 +3,13 @@ import { getFirestore } from "firebase/firestore";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDNuHUXLL9GimiMcL7SMLMuV_zZvMxBUKs",
-  authDomain: "studentrecords-fbf2a.firebaseapp.com",
-  projectId: "studentrecords-fbf2a",
-  storageBucket: "studentrecords-fbf2a.appspot.com",
-  messagingSenderId: "675247964112",
-  appId: "1:675247964112:web:509c6fdc0ea089e338c3d5",
-  measurementId: "G-GQYC72N4VL"
+  apiKey: import.meta.env.VITE_APP_API_KEY,
+  authDomain: import.meta.env.VITE_APP__AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_APP_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_APP_ID,
+  measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID
 };
 
 // initialized firebase
