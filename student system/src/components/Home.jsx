@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, getDocs, addDoc, onSnapshot } from "firebase/firestore";
+import { collection, getDocs, addDoc, doc, deleteDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
 import Student from './Student';
@@ -16,7 +16,7 @@ const Home = () => {
   const getStudents = async () => {
     const querySnapshot = await getDocs(collection(db, "students"));
     const students = querySnapshot.docs.map((doc) => (
-      {...doc.data()}
+      { ...doc.data(), id: doc.id }
     ));
     setStudentList(students);
   };
@@ -43,6 +43,11 @@ const Home = () => {
         grade: ''
       });
     }
+  };
+  
+  const deleteStudent = (id) => {
+    deleteDoc(doc(db, "students", id));
+    getStudents();
   };
 
   return (
@@ -108,12 +113,14 @@ const Home = () => {
       <hr />
 
       {
-        studentList.map((studentRecord, index) => (
+        studentList && studentList.map((studentRecord, i) => (
           <Student 
-            key={index} 
+            key={i} 
             firstname={studentRecord.firstname} 
             lastname={studentRecord.lastname} 
             grade={studentRecord.grade} 
+            id={studentRecord.id}
+            deleteStudent={deleteStudent}
           />
         ))
       }
