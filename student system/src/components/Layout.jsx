@@ -16,6 +16,7 @@ function Layout() {
               <Link className="nav-link active" aria-current="page" to="home">Home</Link>
               <a className="nav-link" href="#">About</a>
               <a className="nav-link" href="#">Contact</a>
+              <Link className="nav-link" to="register">Register</Link>
               <Link className="nav-link" to="login">Login</Link>
             </div>
           </div>
