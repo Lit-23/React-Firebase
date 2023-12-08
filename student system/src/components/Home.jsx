@@ -36,6 +36,7 @@ const Home = () => {
       );
 
       addDoc(collection(db, 'students'), student);
+      getStudents();
   
       setStudent({
         firstname: '',
@@ -70,7 +71,7 @@ const Home = () => {
       grade: student.grade
     });
     getStudents();
-    setEditToggle(true);
+    setEditToggle(false);
   
     setStudent({
       firstname: '',
